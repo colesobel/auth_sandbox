@@ -7,9 +7,13 @@ function Tickets() {
 }
 
 router.get('/', function(req, res, next) {
-    Tickets().select().then(function (tickets) {
-      res.render('tickets/index', {tickets: tickets});
-    });
+    if (req.signedCookies.user) {
+        Tickets().select().then(function (tickets) {
+            res.render('tickets/index', {tickets: tickets});
+        });
+    } else {
+        res.redirect('/signin')
+    }
 });
 
 router.post('/', function(req, res, next) {
